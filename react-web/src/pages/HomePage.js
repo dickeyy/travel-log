@@ -126,7 +126,6 @@ function HomePage() {
                   let city = results[0].address_components.find((component) => component.types.includes('locality'));
 
                   if (!country) {
-                    alert('Selected location could not be geo-coded. Please remove the marker and select a location closer to a city.\n\nLatitude: ' + e.latLng.lat() + '\nLongitude: ' + e.latLng.lng());
                     toast({
                       title: "Error",
                       description: 'Selected location could not be geo-coded. Please remove the marker and select a location closer to a city..\n\nLatitude: ' + e.latLng.lat() + '\nLongitude: ' + e.latLng.lng(),
