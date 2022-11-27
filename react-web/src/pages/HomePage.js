@@ -165,7 +165,7 @@ function HomePage() {
                   }
 
                   // post to api
-                  axios.post(`https://4e3xnppei9.execute-api.us-east-1.amazonaws.com/user/${session.uid}/add-place`, {
+                  axios.post(`https://4e3xnppei9.execute-api.us-east-1.amazonaws.com/user/${session}/add-place`, {
                     place: {
                       position: { lat: e.latLng.lat(), lng: e.latLng.lng() },
                       title: 'Visited Location',
