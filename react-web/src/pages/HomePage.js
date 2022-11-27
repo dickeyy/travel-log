@@ -1,4 +1,4 @@
-import { ChakraProvider, Text, Heading, Box, Button, Spinner } from "@chakra-ui/react"
+import { ChakraProvider, Text, Heading, Box, Button, Spinner, Toast, useToast } from "@chakra-ui/react"
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import React from 'react';
 import theme from "../theme";
@@ -14,6 +14,7 @@ function HomePage() {
   const [cities, setCities] = React.useState([]);
 
   const [pageLoading, setPageLoading] = React.useState(true);
+  const toast = useToast()
 
   const cookies = new Cookies();
   const [session] = React.useState(cookies.get('travel-session'));
@@ -126,6 +127,13 @@ function HomePage() {
 
                   if (!country) {
                     alert('Selected location could not be geo-coded. Please remove the marker and select a location closer to a city.\n\nLatitude: ' + e.latLng.lat() + '\nLongitude: ' + e.latLng.lng());
+                    toast({
+                      title: "Error",
+                      description: 'Selected location could not be geo-coded. Please remove the marker and select a location closer to a city..\n\nLatitude: ' + e.latLng.lat() + '\nLongitude: ' + e.latLng.lng(),
+                      status: "error",
+                      duration: 5000,
+                      isClosable: true,
+                    })
                     return;
                   }
 
