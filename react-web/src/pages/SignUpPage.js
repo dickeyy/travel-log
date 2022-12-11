@@ -207,7 +207,7 @@ function SignupPage() {
                                             name="termsAccepted"
                                             onChange={form.handleChange}
                                             isChecked={form.values.termsAccepted}
-                                            colorScheme="teal"
+                                            colorScheme="red"
                                         >
                                             I agree to the ToS and Privacy Policy
                                         </Checkbox>
@@ -219,7 +219,7 @@ function SignupPage() {
                                 
                                 <Button
                                     mt={4}
-                                    colorScheme='teal'
+                                    colorScheme='red'
                                     isLoading={props.isSubmitting}
                                     type='submit'
                                 >
@@ -230,7 +230,7 @@ function SignupPage() {
                         </Formik>
                     </FormControl>
                     <NavLink to={'/signin'}>
-                        <Link _hover={{ color: 'blue.500', textDecoration: 'underline' }}>
+                        <Link _hover={{ color: 'red.500', textDecoration: 'underline' }}>
                             Already have an account?
                         </Link>
                     </NavLink>

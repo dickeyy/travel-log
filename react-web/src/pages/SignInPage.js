@@ -149,7 +149,7 @@ function SignInPage() {
                                 
                                 <Button
                                     mt={4}
-                                    colorScheme='teal'
+                                    colorScheme='red'
                                     isLoading={props.isSubmitting}
                                     type='submit'
                                 >
@@ -160,7 +160,7 @@ function SignInPage() {
                         </Formik>
                     </FormControl>
                     <NavLink to={'/signup'}>
-                        <Link _hover={{ color: 'blue.500', textDecoration: 'underline' }}>
+                        <Link _hover={{ color: 'red.500', textDecoration: 'underline' }}>
                             Don't have an account?
                         </Link>
                     </NavLink>

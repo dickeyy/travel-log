@@ -19,6 +19,12 @@ function HomePage() {
   const cookies = new Cookies();
   const [session] = React.useState(cookies.get('travel-session'));
 
+  var symbolThree = {
+    path: 'M -5,-5 5,5 M 5,-5 -5,5',
+    strokeColor: '#fff',
+    strokeWeight: 3
+  };
+
   React.useEffect(() => {
     console.log(session);
     if (session !== undefined) {
@@ -74,6 +80,35 @@ function HomePage() {
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
+
+    // Get the users cuurent location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        bounds.extend(pos);
+        map.setCenter(pos);
+
+        // Add a blue dot to the map
+        new window.google.maps.Marker({
+          position: pos,
+          title: 'Current Location',
+          map,
+          icon: {
+            // Make the dot pulsate
+            path: window.google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            strokeColor: '#4285F4',
+            strokeWeight: 1,
+            fillColor: '#4285F4',
+            fillOpacity: 0.5,
+          },
+        });
+      })
+    }
+
     map.setZoom(5);
     map.fitBounds(bounds);
 
@@ -180,6 +215,7 @@ function HomePage() {
                   });
 
                   const marker = new window.google.maps.Marker({
+                    icon: symbolThree,
                     position: { lat: e.latLng.lat(), lng: e.latLng.lng() },
                     map: map,
                     title: 'Visited Location',
@@ -202,18 +238,30 @@ function HomePage() {
 
           {markers.map((marker) => (
             <Marker
-              key={marker.id}
+              key={marker.position.lat + marker.position.lng}
               position={{ lat: marker.position.lat, lng: marker.position.lng }}
               title={marker.title}
+              animation={window.google.maps.Animation.DROP}
               map={map}
+              icon={symbolThree}
               onClick={() => {
-                // Remove the marker
-                marker.setMap(null);
 
                 // Remove from markers array
                 setMarkers((markers) => {
                   return markers.filter((m) => m !== marker);
                 });
+
+                // Make a request to remove from database
+                axios.post(`https://4e3xnppei9.execute-api.us-east-1.amazonaws.com/user/${session}/delete-place`, {
+                  place: marker,
+                }).then((response) => {
+                  console.log(response);
+                }
+                ).catch((error) => {
+                  console.log(error);
+                }
+                );
+
               }}
             />
           ))}
