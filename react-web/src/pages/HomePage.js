@@ -88,6 +88,7 @@ function HomePage() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        console.log(pos);
         bounds.extend(pos);
         map.setCenter(pos);
 
@@ -107,6 +108,9 @@ function HomePage() {
           },
         });
       })
+    } else {
+      // Browser doesn't support Geolocation
+      console.log(navigator)
     }
 
     map.setZoom(5);
@@ -221,7 +225,32 @@ function HomePage() {
                     title: 'Visited Location',
                     country: country,
                     state: state,
-                    city: city
+                    city: city,
+                    
+                  });
+
+                  marker.addListener('click', () => {
+                    // Remove from markers array
+                    setMarkers((markers) => {
+                      return markers.filter((m) => m !== marker);
+                    });
+
+                    // Make a request to remove from database
+                    axios.post(`https://4e3xnppei9.execute-api.us-east-1.amazonaws.com/user/${session}/delete-place`, {
+                      place: {
+                        position: { lat: e.latLng.lat(), lng: e.latLng.lng() },
+                        title: 'Visited Location',
+                        country: country,
+                        state: state,
+                        city: city
+                      }
+                    }).then((response) => {
+                      console.log(response);
+                    }).catch((error) => {
+                      console.log(error);
+                    });
+
+                    marker.setMap(null);
                   });
 
                   setMarkers((markers) => [...markers, marker]);
